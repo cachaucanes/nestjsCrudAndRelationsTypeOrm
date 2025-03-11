@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { OrdersService } from '../services/orders.service';
 import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto';
@@ -20,6 +22,7 @@ export class OrdersController {
     return this.ordersService.findAll();
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
   get(@Param('id', ParseIntPipe) id: number) {
     return this.ordersService.findOne(id);

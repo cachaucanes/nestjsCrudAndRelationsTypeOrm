@@ -24,6 +24,7 @@ export class Customer {
   name: string;
 
   @Column({
+    name: 'last_name',
     type: 'varchar',
     length: 255,
   })

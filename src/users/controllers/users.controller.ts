@@ -7,6 +7,8 @@ import {
   Put,
   Delete,
   ParseIntPipe,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 
 import { UsersService } from '../services/users.service';
@@ -16,6 +18,7 @@ import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   findAll() {
     return this.usersService.findAll();

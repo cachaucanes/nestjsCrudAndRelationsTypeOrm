@@ -17,16 +17,17 @@ export class OrdersService {
   }
 
   async findOne(id: number) {
-    const product = await this.orderRepo.findOne({
+    const order = await this.orderRepo.findOne({
       where: { id },
       // relations: { orderItems: true },
       relations: { orderItems: { product: true } },
       order: { orderItems: { id: 'ASC' } },
     });
-    if (!product) {
+    if (!order) {
       throw new NotFoundException(`Order #${id} not found`);
     }
-    return product;
+
+    return order;
   }
 
   async create(data: CreateOrderDto) {
@@ -59,5 +60,35 @@ export class OrdersService {
 
   async remove(id: number) {
     return await this.orderRepo.delete(id);
+  }
+
+  /**
+   * Obtiene el total de la orden consultando la base de datos mediante la instancia de DataSource.
+   * Adaptado para TypeORM 0.3.
+   *
+   * @returns El total de la orden como un número.
+   */
+  /* 
+    SELECT o.id AS order_id, 
+    SUM(p.price * oi.quantity) AS total
+    FROM orders o
+    JOIN order_items oi ON o.id = oi.order_id
+    JOIN products p ON oi.product_id = p.id
+    WHERE o.id = 1
+    GROUP BY o.id;
+  */
+  async totalOrder(id: number): Promise<object> {
+    const result: { total: string } | undefined = await this.orderRepo
+      .createQueryBuilder('o')
+      .select('SUM(p.price * oi.quantity)', 'total')
+      .innerJoin('o.orderItems', 'oi')
+      .innerJoin('oi.product', 'p')
+      .where('o.id = :orderId', { orderId: id })
+      .groupBy('o.id')
+      .getRawOne();
+
+    return {
+      total: result ? Number(result.total) : 0,
+    };
   }
 }

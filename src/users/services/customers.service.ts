@@ -1,17 +1,30 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { Customer } from '../entities/customer.entity';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UsersService } from './users.service';
+// import { UsersService } from './users.service';
 
 @Injectable()
 export class CustomersService {
   constructor(
     @InjectRepository(Customer) private customerRepo: Repository<Customer>,
+    @Inject(forwardRef(() => UsersService))
+    private readonly usersService: UsersService,
+    // private usersService: UsersService,
   ) {}
 
   async findAll() {
+    const datauser = await this.usersService.findAll();
+    console.log(datauser[0].email);
+
     return await this.customerRepo.find();
   }
 
