@@ -9,6 +9,7 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
+  UseGuards,
   // ParseIntPipe,
 } from '@nestjs/common';
 
@@ -19,7 +20,10 @@ import {
   UpdateProductDto,
 } from '../dtos/product.dto';
 import { ParseIntPipe } from 'src/common/parse-int.pipe';
+import { ApiKeyGuard } from 'src/auth/guards/api-key.guard';
+import { Public } from 'src/auth/decorators/public.decorator';
 
+@UseGuards(ApiKeyGuard)
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
@@ -45,6 +49,7 @@ export class ProductsController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
+  @Public()
   getOne(@Param('id', ParseIntPipe) id: number) {
     // response.status(200).send({
     //   message: `product ${id}`,

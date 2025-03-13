@@ -8,6 +8,7 @@ import { Client } from 'pg';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CustomersService } from './customers.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -43,8 +44,21 @@ export class UsersService {
     }
     return user;
   }
+  async findByEmail(email: string) {
+    const user = await this.userRepo.findOne({
+      where: { email },
+    });
+    /* if (!user) {
+      throw new NotFoundException(`User #${email} not found`);
+    } */
+    return user;
+  }
   async create(data: CreateUserDto) {
     const newUser = this.userRepo.create(data);
+
+    const hashPassword = await bcrypt.hash(newUser.password, 10);
+    newUser.password = hashPassword;
+
     if (data.idCustomer) {
       newUser.customer = await this.customersService.findOne(data.idCustomer);
     }
