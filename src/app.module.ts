@@ -22,6 +22,8 @@ import * as Joi from 'joi';
           .default('development'),
         PORT: Joi.number().required().default(3000),
         NAME_DB: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRES_IN: Joi.string().required(),
       }),
     }),
     MorganModule,
