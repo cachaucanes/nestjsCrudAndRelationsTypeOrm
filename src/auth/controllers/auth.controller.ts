@@ -1,4 +1,4 @@
-import { Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Controller, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/users/entities/user.entity';
@@ -9,6 +9,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
   @UseGuards(AuthGuard('local'))
   @Post('login')
+  @HttpCode(200)
   async login(@Req() req: Request) {
     if (req.user) {
       const user = req.user as User;

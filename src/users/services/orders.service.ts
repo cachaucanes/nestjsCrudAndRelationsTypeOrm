@@ -20,7 +20,7 @@ export class OrdersService {
     const order = await this.orderRepo.findOne({
       where: { id },
       // relations: { orderItems: true },
-      relations: { orderItems: { product: true } },
+      relations: { orderItems: { product: true }, customer: true },
       order: { orderItems: { id: 'ASC' } },
     });
     if (!order) {

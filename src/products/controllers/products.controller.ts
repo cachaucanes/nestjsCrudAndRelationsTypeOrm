@@ -20,14 +20,22 @@ import {
   UpdateProductDto,
 } from '../dtos/product.dto';
 import { ParseIntPipe } from 'src/common/parse-int.pipe';
-import { ApiKeyGuard } from 'src/auth/guards/api-key.guard';
+// import { ApiKeyGuard } from 'src/auth/guards/api-key.guard';
 import { Public } from 'src/auth/decorators/public.decorator';
+// import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/auth/models/roles.models';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
-@UseGuards(ApiKeyGuard)
+// @UseGuards(AuthGuard('jwt'), ApiKeyGuard)
+// @UseGuards(ApiKeyGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
+  @Public()
   @Get()
   getProducts(@Query() params: FilterProductsDto) {
     /* getProducts(
@@ -47,9 +55,9 @@ export class ProductsController {
     return `yo soy un filter`;
   }
 
+  @Public()
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @Public()
   getOne(@Param('id', ParseIntPipe) id: number) {
     // response.status(200).send({
     //   message: `product ${id}`,
@@ -57,6 +65,7 @@ export class ProductsController {
     return this.productsService.findOne(id);
   }
 
+  @Roles(Role.ADMIN)
   @Post()
   create(@Body() payload: CreateProductDto) {
     // return {
@@ -95,3 +104,9 @@ export class ProductsController {
     return this.productsService.removeCategoryByProduct(id, idCategory);
   }
 }
+/* 
+
+	insomnia.variables.set("token", 'hello world');
+	insomnia.globals.set("token", "variable_value1");
+	insomnia.collectionVariables.set("token", "variable_value22");
+*/

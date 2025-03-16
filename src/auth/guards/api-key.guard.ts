@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { IS_PUBLIC } from '../decorators/public.decorator';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class ApiKeyGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const isPublic = this.reflector.get<boolean>(
-      IS_PUBLIC_KEY,
+      IS_PUBLIC,
       context.getHandler(),
     );
     if (isPublic) {
@@ -28,12 +28,15 @@ export class ApiKeyGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest<Request>();
-    const authHeader = request.headers['authorization'] as string | undefined;
+    const authHeader = request.headers['secund_validation'] as
+      | string
+      | undefined;
+    console.log(typeof authHeader, typeof this.configService.get('API_KEY'));
 
     const isAuth = authHeader === this.configService.get('API_KEY');
     if (!isAuth) {
-      throw new UnauthorizedException('Not authorized');
+      throw new UnauthorizedException('Not authorized secund_validation');
     }
-    return isAuth;
+    return true;
   }
 }

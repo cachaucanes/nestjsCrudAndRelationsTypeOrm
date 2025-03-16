@@ -6,15 +6,7 @@ import {
   UpdateProductDto,
 } from '../dtos/product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  Between,
-  FindOperator,
-  FindOptions,
-  FindOptionsUtils,
-  FindOptionsWhere,
-  In,
-  Repository,
-} from 'typeorm';
+import { Between, FindOptionsWhere, In, Repository } from 'typeorm';
 import { BrandsService } from './brands.service';
 import { Category } from '../entities/category.entity';
 
