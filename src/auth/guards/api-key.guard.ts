@@ -1,4 +1,4 @@
-import {
+/* import {
   CanActivate,
   ExecutionContext,
   Injectable,
@@ -40,3 +40,4 @@ export class ApiKeyGuard implements CanActivate {
     return true;
   }
 }
+ */

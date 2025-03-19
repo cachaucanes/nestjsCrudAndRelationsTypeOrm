@@ -21,7 +21,8 @@ export class UsersService {
 
   async findAll() {
     return await this.userRepo.find({
-      relations: ['customer'],
+      relations: { customer: true },
+      order: { id: 'ASC' },
     });
     /*  const result = await this.pg.query<User>('SELECT * FROM tasks');
     return result.rows; */

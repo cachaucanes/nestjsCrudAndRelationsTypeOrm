@@ -27,8 +27,8 @@ export class ProfileController {
   @Roles(Role.CUSTOMER)
   @Get('my-orders')
   async getOrders(@Req() req: Request) {
-    const user = req.user as PayloadToken;
-    const customer = await this.usersService.findOne(user.sub);
-    return this.orderService.findOne(customer.customer.id);
+    const userToken = req.user as PayloadToken;
+    const user = await this.usersService.findOne(userToken.sub);
+    return this.orderService.findByIdCustomer(user.customer.id);
   }
 }

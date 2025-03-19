@@ -21,7 +21,7 @@ import * as Joi from 'joi';
           .valid('development', 'production', 'staging')
           .default('development'),
         PORT: Joi.number().required().default(3000),
-        NAME_DB: Joi.string().required(),
+        DATABASE_URL: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRES_IN: Joi.string().required(),
       }),
@@ -42,28 +42,4 @@ import * as Joi from 'joi';
     },
   ],
 })
-export class AppModule {
-  /* private client: Client;
-
-  constructor(private configService: ConfigService) {}
-
-  async onModuleInit() {
-    // Conectar a PostgreSQL con valores desde ConfigService
-    this.client = new Client({
-      user: this.configService.get('USER_DB'),
-      host: this.configService.get('HOST_DB'),
-      database: this.configService.get('NAME_DB'),
-      password: this.configService.get('PASSWORD_DB'),
-      port: this.configService.get<number>('PORT_DB'),
-    });
-
-    await this.client.connect();
-    this.client.query('SELECT * from tasks', (err, res) => {
-      if (err) {
-        console.error(err);
-      } else {
-        console.log('Connected to database:', res.rows);
-      }
-    });
-  } */
-}
+export class AppModule {}

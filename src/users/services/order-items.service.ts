@@ -18,6 +18,17 @@ export class OrderItemsService {
     @InjectRepository(Product) private productRepo: Repository<Product>,
   ) {}
 
+  async findById(id: number) {
+    const item = await this.orderItemsRepo.findOne({
+      where: { id },
+      relations: { order: { customer: true } },
+    });
+    if (!item) {
+      throw new NotFoundException(`Order Item #${id} not found`);
+    }
+    return item;
+  }
+
   async create(data: CreateOrderItemDto) {
     const order = await this.orderRepo.findOne({
       where: { id: data.idOrder },

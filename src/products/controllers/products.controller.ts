@@ -50,11 +50,6 @@ export class ProductsController {
     return this.productsService.findAll(params);
   }
 
-  @Get('filter')
-  getProductFilter() {
-    return `yo soy un filter`;
-  }
-
   @Public()
   @Get(':id')
   @HttpCode(HttpStatus.OK)
@@ -75,6 +70,7 @@ export class ProductsController {
     return this.productsService.create(payload);
   }
 
+  @Roles(Role.ADMIN)
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -83,6 +79,7 @@ export class ProductsController {
     return this.productsService.update(id, payload);
   }
 
+  @Roles(Role.ADMIN)
   @Put(':id/category/:idCategory')
   addCategoryToProduct(
     @Param('id', ParseIntPipe) id: number,
@@ -91,11 +88,13 @@ export class ProductsController {
     return this.productsService.addCategoryToProduct(id, idCategory);
   }
 
+  @Roles(Role.ADMIN)
   @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.remove(id);
   }
 
+  @Roles(Role.ADMIN)
   @Delete(':id/category/:idCategory')
   deleteCategory(
     @Param('id', ParseIntPipe) id: number,
@@ -104,9 +103,3 @@ export class ProductsController {
     return this.productsService.removeCategoryByProduct(id, idCategory);
   }
 }
-/* 
-
-	insomnia.variables.set("token", 'hello world');
-	insomnia.globals.set("token", "variable_value1");
-	insomnia.collectionVariables.set("token", "variable_value22");
-*/

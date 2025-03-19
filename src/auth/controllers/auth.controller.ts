@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+
   @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(200)

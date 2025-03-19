@@ -36,6 +36,18 @@ export class Customer {
   })
   phone: string;
 
+  @Column({
+    type: 'varchar',
+    length: 255,
+  })
+  address: string;
+
+  @Column({
+    type: 'varchar',
+    length: 80,
+  })
+  city: string;
+
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',

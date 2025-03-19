@@ -17,6 +17,14 @@ export class CreateCustomerDto {
 
   @IsString()
   @IsNotEmpty()
+  readonly address: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly city: string;
+
+  @IsString()
+  @IsNotEmpty()
   @Transform(({ value }: { value: string }) => value.toString())
   readonly phone: string;
 }

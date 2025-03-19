@@ -22,9 +22,6 @@ export class CustomersService {
   ) {}
 
   async findAll() {
-    const datauser = await this.usersService.findAll();
-    console.log(datauser[0].email);
-
     return await this.customerRepo.find();
   }
 

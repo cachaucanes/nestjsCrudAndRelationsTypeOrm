@@ -8,6 +8,6 @@ export class AppService {
     private configService: ConfigService,
   ) {}
   getHello(): string {
-    return `Hello World! Entorno: ${this.configService.get('NODE_ENV')} ${this.apikey} ${this.configService.get('NAME_DB')}`;
+    return `Hello World! Entorno: ${this.configService.get('NODE_ENV')}`;
   }
 }
